@@ -1,5 +1,8 @@
 import { Module } from '@nestjs/common';
 
+// MODULES
+import { ProxyRbmqModule } from '@src/proxy-rbmq/proxy-rbmq.module';
+
 // CONTROLLERS
 import { AuthController } from './auth.controller';
 
@@ -10,6 +13,7 @@ import { AuthService } from './auth.service';
 import { AUTH_SERVICE } from '@src/shared/interfaces/auth/auth.service';
 
 @Module({
+	imports: [ProxyRbmqModule],
 	controllers: [AuthController],
 	providers: [
 		{
