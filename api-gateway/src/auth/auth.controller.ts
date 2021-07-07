@@ -4,13 +4,11 @@ import { Body, Controller, Inject, Post } from '@nestjs/common';
 import {
 	AUTH_SERVICE,
 	IAuthService,
-} from '@src/shared/interfaces/auth/auth.service';
+} from '@src/shared/auth/interfaces/auth.service';
 
 // MODELS
-import {
-	CreateAccountModel,
-	LoginModel,
-} from '@src/shared/models/auth/auth.model';
+import { CreateAccountModel } from '@src/shared/auth/models/create-account.model';
+import { LoginModel } from '@src/shared/auth/models/login.model';
 
 @Controller('auth')
 export class AuthController {

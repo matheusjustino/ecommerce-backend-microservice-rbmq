@@ -3,14 +3,15 @@ import { EventPattern } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 
 // MODELS
-import {
-	UserModel,
-	RegisterModel,
-	LoginModel,
-} from '@src/shared/auth/auth.model';
+import { RegisterModel } from '@src/shared/auth/models/register.model';
+import { UserModel } from '@src/shared/auth/models/user.model';
+import { LoginModel } from '@src/shared/auth/models/login.model';
 
 // SERVICES
-import { AUTH_SERVICE, IAuthService } from '@src/shared/auth/auth.service';
+import {
+	AUTH_SERVICE,
+	IAuthService,
+} from '@src/shared/auth/interfaces/auth.service';
 
 @Controller('auth')
 export class AuthController {

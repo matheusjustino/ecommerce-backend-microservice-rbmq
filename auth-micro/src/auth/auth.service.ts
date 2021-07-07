@@ -7,20 +7,15 @@ import { isValidCPF } from '@brazilian-utils/brazilian-utils';
 import * as bcrypt from 'bcrypt';
 
 // INTERFACES
-import { IAuthService } from '@src/shared/auth/auth.service';
+import { IAuthService } from '@src/shared/auth/interfaces/auth.service';
 
 // REPOSITORIES
 import { UserRepository } from '@src/database/repositories/user.repository';
 
-// SCHEMAS
-import { UserDocument } from '@src/database/schemas/user.schema';
-
 // MODELS
-import {
-	UserModel,
-	RegisterModel,
-	LoginModel,
-} from '@src/shared/auth/auth.model';
+import { UserModel } from '@src/shared/auth/models/user.model';
+import { RegisterModel } from '@src/shared/auth/models/register.model';
+import { LoginModel } from '@src/shared/auth/models/login.model';
 
 @Injectable()
 export class AuthService implements IAuthService {
@@ -31,7 +26,7 @@ export class AuthService implements IAuthService {
 		private readonly userRepository: UserRepository,
 	) {}
 
-	public validateToken(token: string): Observable<UserDocument> {
+	public validateToken(token: string): Observable<UserModel> {
 		this.logger.log(`Validate Token - Payload: ${token}`);
 
 		return from(this.jwtService.verifyAsync(token)).pipe(
@@ -47,7 +42,7 @@ export class AuthService implements IAuthService {
 					throw new RpcException('Invalid token. User not found');
 				}
 
-				return user;
+				return user as UserModel;
 			}),
 			catchError((error) => {
 				this.logger.error(`Validate Token Error: ${error}`);

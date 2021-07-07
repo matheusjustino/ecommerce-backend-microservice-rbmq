@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs';
-import {
-	AccountModel,
-	CreateAccountModel,
-	LoginModel,
-} from '@src/shared/models/auth/auth.model';
+
+// MODELS
+import { AccountModel } from '../models/account.model';
+import { CreateAccountModel } from '../models/create-account.model';
+import { LoginModel } from '../models/login.model';
 
 export const AUTH_SERVICE = 'AuthService';
 

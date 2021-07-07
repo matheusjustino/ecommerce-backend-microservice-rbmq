@@ -32,7 +32,7 @@ async function bootstrap() {
 
 	app.listen(() =>
 		logger.log(
-			`Nestjs-Micro-Auth-RBMQ Microservice is listening: ${appConfigService.queue}`,
+			`Nestjs-Auth-RBMQ Microservice is listening: ${appConfigService.queue}`,
 		),
 	);
 }

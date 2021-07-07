@@ -7,14 +7,12 @@ import { catchError } from 'rxjs/operators';
 import { ClientProxyRbmq } from '@src/proxy-rbmq/client-proxy-rbmq';
 
 // INTERFACES
-import { IAuthService } from '@src/shared/interfaces/auth/auth.service';
+import { IAuthService } from '@src/shared/auth/interfaces/auth.service';
 
 // MODELS
-import {
-	AccountModel,
-	CreateAccountModel,
-	LoginModel,
-} from '@src/shared/models/auth/auth.model';
+import { CreateAccountModel } from '@src/shared/auth/models/create-account.model';
+import { AccountModel } from '@src/shared/auth/models/account.model';
+import { LoginModel } from '@src/shared/auth/models/login.model';
 
 @Injectable()
 export class AuthService implements IAuthService {

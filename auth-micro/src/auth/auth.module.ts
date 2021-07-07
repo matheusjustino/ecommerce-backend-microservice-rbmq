@@ -9,11 +9,13 @@ import { ProxyRbmqModule } from '@src/proxy-rbmq/proxy-rbmq.module';
 
 // SERVICES
 import { AuthService } from './auth.service';
-import { AUTH_SERVICE } from '@src/shared/auth/auth.service';
 import { AppConfigService } from '@src/app-config/app-config.service';
 
 // CONTROLLERS
 import { AuthController } from './auth.controller';
+
+// INTERFACES
+import { AUTH_SERVICE } from '@src/shared/auth/interfaces/auth.service';
 
 @Module({
 	imports: [

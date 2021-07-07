@@ -4,10 +4,12 @@ import { Document } from 'mongoose';
 // COMMON
 import { Sex } from '@src/common/enums/sex.enum';
 import { UserRole } from '@src/common/enums/user-role.enum';
-import { UserModel } from '@src/shared/auth/auth.model';
+
+// MODELS
+import { UserModel } from '@src/shared/auth/models/user.model';
 
 @Schema({ timestamps: true })
-export class User extends UserModel {
+export class User implements UserModel {
 	@Prop({ type: String, required: true })
 	public firstName: string;
 
