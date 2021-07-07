@@ -10,7 +10,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 
 // INTERFACES
-import { AUTH_SERVICE } from '@src/shared/interfaces/auth/auth.service';
+import { AUTH_SERVICE } from '@src/shared/auth/interfaces/auth.service';
 
 @Module({
 	imports: [ProxyRbmqModule],
