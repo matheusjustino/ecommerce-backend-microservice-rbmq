@@ -7,6 +7,7 @@ import { DatabaseModule } from '@src/database/database.module';
 import { AppConfigModule } from '@src/app-config/app-config.module';
 import { ProxyRbmqModule } from '@src/proxy-rbmq/proxy-rbmq.module';
 import { JobsModule } from '@src/jobs/jobs.module';
+import { HashModule } from '@src/hash/hash.module';
 
 // SERVICES
 import { AuthService } from './auth.service';
@@ -25,6 +26,7 @@ import { AUTH_SERVICE } from '@src/shared/auth/interfaces/auth.service';
 		AppConfigModule,
 		ProxyRbmqModule,
 		JobsModule,
+		HashModule,
 		JwtModule.registerAsync({
 			imports: [AppConfigModule],
 			useFactory: (appConfigService: AppConfigService) => ({
