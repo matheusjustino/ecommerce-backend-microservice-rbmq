@@ -1,14 +1,15 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { JwtService } from '@nestjs/jwt';
 import { from, Observable, of, throwError } from 'rxjs';
 import { map, catchError, switchMap } from 'rxjs/operators';
 import { isValidCPF } from '@brazilian-utils/brazilian-utils';
-import * as bcrypt from 'bcrypt';
 import { isAfter, addHours } from 'date-fns';
 
 // INTERFACES
 import { IAuthService } from '@src/shared/auth/interfaces/auth.service';
+import { IHashService } from '@src/shared/hash/interfaces/hash.service';
+import { HASH_SERVICE } from '@src/shared/hash/interfaces/hash.service';
 
 // REPOSITORIES
 import { UserRepository } from '@src/database/repositories/user.repository';
@@ -27,6 +28,8 @@ import { UserTokenModel } from '@src/shared/auth/models/user-token.model';
 
 // SERVICES
 import { JobsService } from '@src/jobs/jobs.service';
+
+// SCHEMAS
 import { UserTokenDocument } from '@src/database/schemas/user-token.schema';
 
 @Injectable()
@@ -34,6 +37,8 @@ export class AuthService implements IAuthService {
 	private logger = new Logger(AuthService.name);
 
 	constructor(
+		@Inject(HASH_SERVICE)
+		private readonly hashService: IHashService,
 		private readonly jwtService: JwtService,
 		private readonly jobsService: JobsService,
 		private readonly userRepository: UserRepository,
@@ -119,7 +124,9 @@ export class AuthService implements IAuthService {
 					throw new RpcException('User not found');
 				}
 
-				return from(bcrypt.compare(login.password, user.password));
+				return from(
+					this.hashService.compareHash(login.password, user.password),
+				);
 			}),
 			switchMap((result) => {
 				if (!result) {
