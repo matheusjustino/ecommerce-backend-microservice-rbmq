@@ -10,5 +10,7 @@ export const AUTH_SERVICE = 'AuthService';
 export interface IAuthService {
 	createAccount(data: CreateAccountModel): Observable<AccountModel>;
 	doLogin(data: LoginModel): Observable<{ token: string }>;
-	validateToken(token: string): Observable<any>;
+	validateToken(token: string): Observable<AccountModel>;
+	forgotPassword(userEmail: string): Observable<any>;
+	resetPassword(data): Observable<AccountModel>;
 }

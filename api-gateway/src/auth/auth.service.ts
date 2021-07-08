@@ -52,4 +52,30 @@ export class AuthService implements IAuthService {
 			}),
 		);
 	}
+
+	public forgotPassword(userEmail: string) {
+		this.logger.log(`Generate Token - Payload: ${userEmail}`);
+
+		return this.clientProxyAuthMicro
+			.send('forgot-password', userEmail)
+			.pipe(
+				catchError((error) => {
+					this.logger.error(`Forgot Password Error`);
+
+					return throwError(error);
+				}),
+			);
+	}
+
+	public resetPassword(data) {
+		this.logger.log(`Reset Password - Payload: ${data}`);
+
+		return this.clientProxyAuthMicro.send('reset-password', data).pipe(
+			catchError((error) => {
+				this.logger.error(`Reset Password Error`);
+
+				return throwError(error);
+			}),
+		);
+	}
 }
