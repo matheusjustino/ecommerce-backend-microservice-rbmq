@@ -26,4 +26,14 @@ export class AuthController {
 	public doLogin(@Body() data: LoginModel) {
 		return this.authService.doLogin(data);
 	}
+
+	@Post('forgot-password')
+	public forgotPassword(@Body() data) {
+		return this.authService.forgotPassword(data.email);
+	}
+
+	@Post('reset-password')
+	public resetPassword(@Body() data) {
+		return this.authService.resetPassword(data);
+	}
 }

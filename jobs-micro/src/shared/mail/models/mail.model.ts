@@ -54,21 +54,11 @@ export class SendEmail {
 	public templateData: ParserMailTemplate;
 }
 
-export class ForgotPasswordModel {
+export class ForgotPassword {
 	@Type(() => MailContact)
 	@ValidateNested({ each: true })
 	@IsNotEmpty()
 	public to: MailContact;
 
 	public token: string;
-}
-
-export class ResetPasswordModel {
-	@IsString()
-	@IsNotEmpty()
-	public token: string;
-
-	@IsString()
-	@IsNotEmpty()
-	public password: string;
 }

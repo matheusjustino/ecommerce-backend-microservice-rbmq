@@ -12,6 +12,7 @@ import {
 	AUTH_SERVICE,
 	IAuthService,
 } from '@src/shared/auth/interfaces/auth.service';
+import { ResetPasswordModel } from '@src/shared/jobs/mail/mailModel';
 
 @Controller('auth')
 export class AuthController {
@@ -33,5 +34,15 @@ export class AuthController {
 	@EventPattern('login')
 	public login(login: LoginModel): Observable<{ token: string }> {
 		return this.authService.doLogin(login);
+	}
+
+	@EventPattern('forgot-password')
+	public forgotPassword(data: string): Observable<{ message: string }> {
+		return this.authService.sendForgotPasswordEmail(data);
+	}
+
+	@EventPattern('reset-password')
+	public resetPassword(data: ResetPasswordModel) {
+		return this.authService.resetPassword(data);
 	}
 }

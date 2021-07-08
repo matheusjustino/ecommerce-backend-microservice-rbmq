@@ -6,6 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { DatabaseModule } from '@src/database/database.module';
 import { AppConfigModule } from '@src/app-config/app-config.module';
 import { ProxyRbmqModule } from '@src/proxy-rbmq/proxy-rbmq.module';
+import { JobsModule } from '@src/jobs/jobs.module';
 
 // SERVICES
 import { AuthService } from './auth.service';
@@ -23,6 +24,7 @@ import { AUTH_SERVICE } from '@src/shared/auth/interfaces/auth.service';
 		PassportModule,
 		AppConfigModule,
 		ProxyRbmqModule,
+		JobsModule,
 		JwtModule.registerAsync({
 			imports: [AppConfigModule],
 			useFactory: (appConfigService: AppConfigService) => ({

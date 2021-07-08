@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 
 // SCHEMAS
 import { User, UserDocument, UserSchema } from './schemas/user.schema';
+import { UserToken, UserTokenSchema } from './schemas/user-token.schema';
 
 export const ModelsProviderAsync: AsyncModelFactory[] = [
 	{
@@ -20,5 +21,10 @@ export const ModelsProviderAsync: AsyncModelFactory[] = [
 			});
 			return schema;
 		},
+	},
+	{
+		name: UserToken.name,
+		collection: 'user-tokens',
+		useFactory: () => UserTokenSchema,
 	},
 ];

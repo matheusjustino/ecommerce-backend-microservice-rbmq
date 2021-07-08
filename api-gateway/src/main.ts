@@ -18,12 +18,6 @@ import { CustomValidationPipe } from './common/pipes/custom-validation-pipe.pipe
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 
-	Date.prototype.toJSON = function (): any {
-		return momentTimezone(this)
-			.tz('America/Sao_Paulo')
-			.format('YYYY-MM-DD HH:mm:ss.SSSS');
-	};
-
 	app.use(helmet());
 
 	app.setGlobalPrefix('api/v1');
@@ -34,6 +28,12 @@ async function bootstrap() {
 		new TimeoutInterceptor(),
 	);
 	app.useGlobalPipes(new CustomValidationPipe());
+
+	Date.prototype.toJSON = function (): any {
+		return momentTimezone(this)
+			.tz('America/Sao_Paulo')
+			.format('YYYY-MM-DD HH:mm:ss.SSSS');
+	};
 
 	await app.listen(8080);
 }
