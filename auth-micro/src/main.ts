@@ -30,10 +30,9 @@ async function bootstrap() {
 	app.useGlobalPipes(new CustomValidationPipe());
 	app.useGlobalFilters(new ExceptionFilter());
 
-	app.listen(() =>
-		logger.log(
-			`Nestjs-Auth-RBMQ Microservice is listening: ${appConfigService.queue}`,
-		),
+	await app.listen();
+	logger.log(
+		`Nestjs-Auth-RBMQ Microservice is listening: ${appConfigService.queue}`,
 	);
 }
 bootstrap();
