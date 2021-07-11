@@ -109,7 +109,7 @@ export class AuthService implements IAuthService {
 									email: register.email,
 								};
 
-								return of(res);
+								// return of(res);
 
 								return this.jobsService
 									.sendWelcomeEmail(mailData)
