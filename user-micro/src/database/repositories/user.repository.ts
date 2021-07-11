@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 
 // SCHEMAS
 import { User, UserDocument } from '../../database/schemas/user.schema';
+import { RegisterModel } from '../../shared/user/models/user.model';
 
 @Injectable()
 export class UserRepository {

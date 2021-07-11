@@ -11,9 +11,6 @@ import { UserModel } from '../../shared/user/models/user.model';
 @Schema({ timestamps: true })
 export class User implements UserModel {
 	@Prop({ type: Types.ObjectId })
-	public _id: string;
-
-	@Prop({ type: Types.ObjectId })
 	public accountId: string;
 
 	@Prop({ type: String, required: true })
@@ -38,7 +35,7 @@ export class User implements UserModel {
 	@Prop({ type: String, required: true, unique: true })
 	public email: string;
 
-	@Prop({ type: String, required: true })
+	@Prop({ type: String, required: true, select: false })
 	public password: string;
 
 	@Prop({

@@ -5,6 +5,7 @@ import { ProxyRbmqModule } from './proxy-rbmq/proxy-rbmq.module';
 import { AuthModule } from './auth/auth.module';
 import { JobsModule } from './jobs/jobs.module';
 import { HashModule } from './hash/hash.module';
+import { UserModule } from './user/user.module';
 
 @Module({
 	imports: [
@@ -14,6 +15,7 @@ import { HashModule } from './hash/hash.module';
 		AuthModule,
 		JobsModule,
 		HashModule,
+		UserModule,
 	],
 })
 export class AppModule {}

@@ -1,37 +1,44 @@
 import { Controller, Inject } from '@nestjs/common';
-import { EventPattern } from '@nestjs/microservices';
+import { EventPattern, MessagePattern } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 
 // MODELS
 import { RegisterModel } from '@src/shared/auth/models/register.model';
 import { UserModel } from '@src/shared/auth/models/user.model';
 import { LoginModel } from '@src/shared/auth/models/login.model';
+import { UpdateUserMessageModel } from '@src/shared/auth/models/update-account-message.model';
+import { ResetPasswordModel } from '@src/shared/jobs/mail/mailModel';
+import { AccountModel } from '@src/shared/auth/models/account.model';
 
 // SERVICES
 import {
 	AUTH_SERVICE,
 	IAuthService,
 } from '@src/shared/auth/interfaces/auth.service';
-import { ResetPasswordModel } from '@src/shared/jobs/mail/mailModel';
 
 @Controller('auth')
 export class AuthController {
 	constructor(
 		@Inject(AUTH_SERVICE)
 		private readonly authService: IAuthService,
-	) {}
+	) { }
 
-	@EventPattern('validate-token')
+	/**
+	 * emit -> EventPattern
+	 * send -> MessagePattern
+	 */
+
+	@MessagePattern('validate-token')
 	public validateToken(token: string) {
 		return this.authService.validateToken(token);
 	}
 
-	@EventPattern('register')
+	@MessagePattern('register')
 	public register(registerModel: RegisterModel): Observable<UserModel> {
 		return this.authService.register(registerModel);
 	}
 
-	@EventPattern('login')
+	@MessagePattern('login')
 	public login(login: LoginModel): Observable<{ token: string }> {
 		return this.authService.doLogin(login);
 	}
@@ -41,8 +48,18 @@ export class AuthController {
 		return this.authService.sendForgotPasswordEmail(data);
 	}
 
-	@EventPattern('reset-password')
-	public resetPassword(data: ResetPasswordModel) {
+	@MessagePattern('reset-password')
+	public resetPassword(data: ResetPasswordModel): Observable<{ message: string }> {
 		return this.authService.resetPassword(data);
+	}
+
+	@EventPattern('update-account')
+	public updateAccount(data: UpdateUserMessageModel): Observable<AccountModel> {
+		return this.authService.updateAccount(data);
+	}
+
+	@EventPattern('delete-account')
+	public deleteAccount(accountId: string) {
+		return this.authService.deleteAccount(accountId);
 	}
 }
