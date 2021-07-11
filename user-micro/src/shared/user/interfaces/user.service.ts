@@ -1,14 +1,19 @@
 import { Observable } from 'rxjs';
 
 // MODELS
-import { UpdateUserModel } from '../models/update-user.model';
-import { UserModel } from '../models/user.model';
+import { UpdateUserMessageModel } from '../models/update-user-message.model';
+import { FindUserQueryModel } from '../models/find-user-query.model';
+import { RegisterModel, UserModel } from '../models/user.model';
 
 export const USER_SERVICE = 'USER_SERVICE';
 
 export interface IUserService {
-	getAll(): Observable<UserModel>;
-	getById(userId: string): Observable<UserModel[]>;
-	update(userId: string, data: UpdateUserModel): Observable<UserModel>;
-	delete(userId: string): Observable<UserModel>;
+	createUser(register: RegisterModel): Observable<UserModel>
+	findAll(query: FindUserQueryModel): Observable<UserModel[]>;
+	findById(
+		accountId: string,
+		selectPassword: boolean,
+	): Observable<UserModel>
+	update(data: UpdateUserMessageModel): Observable<UserModel>;
+	delete(userId: string): Observable<{ message: string }>;
 }

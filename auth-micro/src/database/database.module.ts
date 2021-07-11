@@ -9,7 +9,7 @@ import { AppConfigService } from '../app-config/app-config.service';
 import { ModelsProviderAsync } from './models.provider';
 
 // REPOSITORIES
-import { UserRepository } from './repositories/user.repository';
+import { AccountRepository } from './repositories/account.repository';
 import { UserTokenRepository } from './repositories/user-token.repository';
 
 @Module({
@@ -27,7 +27,7 @@ import { UserTokenRepository } from './repositories/user-token.repository';
 		}),
 		MongooseModule.forFeatureAsync(ModelsProviderAsync),
 	],
-	providers: [UserRepository, UserTokenRepository],
-	exports: [UserRepository, UserTokenRepository],
+	providers: [AccountRepository, UserTokenRepository],
+	exports: [AccountRepository, UserTokenRepository],
 })
 export class DatabaseModule {}

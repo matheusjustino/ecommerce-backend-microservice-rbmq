@@ -7,17 +7,17 @@ import { DatabaseModule } from '@src/database/database.module';
 import { AppConfigModule } from '@src/app-config/app-config.module';
 import { ProxyRbmqModule } from '@src/proxy-rbmq/proxy-rbmq.module';
 import { JobsModule } from '@src/jobs/jobs.module';
+import { UserModule } from '@src/user/user.module';
 import { HashModule } from '@src/hash/hash.module';
 
 // SERVICES
-import { AuthService } from './auth.service';
 import { AppConfigService } from '@src/app-config/app-config.service';
 
 // CONTROLLERS
 import { AuthController } from './auth.controller';
 
-// INTERFACES
-import { AUTH_SERVICE } from '@src/shared/auth/interfaces/auth.service';
+// PROVIDERS
+import { AuthProviders } from './auth.providers';
 
 @Module({
 	imports: [
@@ -26,6 +26,7 @@ import { AUTH_SERVICE } from '@src/shared/auth/interfaces/auth.service';
 		AppConfigModule,
 		ProxyRbmqModule,
 		JobsModule,
+		UserModule,
 		HashModule,
 		JwtModule.registerAsync({
 			imports: [AppConfigModule],
@@ -36,18 +37,8 @@ import { AUTH_SERVICE } from '@src/shared/auth/interfaces/auth.service';
 			inject: [AppConfigService],
 		}),
 	],
-	providers: [
-		{
-			useClass: AuthService,
-			provide: AUTH_SERVICE,
-		},
-	],
 	controllers: [AuthController],
-	exports: [
-		{
-			useClass: AuthService,
-			provide: AUTH_SERVICE,
-		},
-	],
+	providers: [...AuthProviders],
+	exports: [...AuthProviders],
 })
-export class AuthModule {}
+export class AuthModule { }

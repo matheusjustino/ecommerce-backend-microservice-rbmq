@@ -12,6 +12,7 @@ import { AppConfigService } from '@src/app-config/app-config.service';
 @Injectable()
 export class ClientProxyRbmq {
 	private clientProxyAuthMicro: ClientProxy = null;
+	private clitProxyUsersMicro: ClientProxy = null;
 
 	constructor(private readonly appConfigService: AppConfigService) {}
 
@@ -26,6 +27,19 @@ export class ClientProxyRbmq {
 		}
 
 		return this.clientProxyAuthMicro;
+	}
+
+	public get clientMicroUsers(): ClientProxy {
+		if (!this.clitProxyUsersMicro) {
+			const clientProxy = this.createClientProxy(
+				[this.appConfigService.amqpUrl],
+				this.appConfigService.usersQueue,
+			);
+
+			this.clitProxyUsersMicro = ClientProxyFactory.create(clientProxy);
+		}
+
+		return this.clitProxyUsersMicro;
 	}
 
 	private createClientProxy(

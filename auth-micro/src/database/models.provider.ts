@@ -2,16 +2,20 @@ import { AsyncModelFactory } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 
 // SCHEMAS
-import { User, UserDocument, UserSchema } from './schemas/user.schema';
+import {
+	Account,
+	AccountSchema,
+	AccountDocument,
+} from './schemas/account.schema';
 import { UserToken, UserTokenSchema } from './schemas/user-token.schema';
 
 export const ModelsProviderAsync: AsyncModelFactory[] = [
 	{
-		name: User.name,
-		collection: 'users',
+		name: Account.name,
+		collection: 'accounts',
 		useFactory: () => {
-			const schema = UserSchema;
-			schema.pre<UserDocument>('save', async function (next) {
+			const schema = AccountSchema;
+			schema.pre<AccountDocument>('save', async function (next) {
 				if (!this.isModified('password')) next();
 
 				const salt: string = await bcrypt.genSalt(5);
