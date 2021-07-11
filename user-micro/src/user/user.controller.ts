@@ -9,19 +9,20 @@ import { MongoPipeTransform } from '../common/decorators/mongo-pipe-transform.de
 import { UpdateUserMessageModel } from '../shared/user/models/update-user-message.model';
 import { FindUserQueryModel } from '../shared/user/models/find-user-query.model';
 import { FindByIdModel } from '../shared/user/models/find-by-id.model';
-import {
-	RegisterModel,
-	UserModel,
-} from '../shared/user/models/user.model';
+import { RegisterModel, UserModel } from '../shared/user/models/user.model';
 
 // INTERFACES
-import { IUserService, USER_SERVICE } from '../shared/user/interfaces/user.service';
+import {
+	IUserService,
+	USER_SERVICE,
+} from '../shared/user/interfaces/user.service';
 
 @Controller('users')
 export class UserController {
 	constructor(
 		@Inject(USER_SERVICE)
-		private readonly userService: IUserService) { }
+		private readonly userService: IUserService,
+	) {}
 
 	/**
 	 * emit -> EventPattern -> não espera a resposta
@@ -52,5 +53,10 @@ export class UserController {
 	@MessagePattern('delete-user')
 	public delete(accountId: string) {
 		return this.userService.delete(accountId);
+	}
+
+	@EventPattern('update-email')
+	public updateEmail(newEmail: string) {
+		return this.userService.updateEmail(newEmail);
 	}
 }

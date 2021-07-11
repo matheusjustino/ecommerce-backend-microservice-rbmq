@@ -1,11 +1,11 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class ResetPasswordModel {
-	@IsString()
+export class UserRequestModel {
 	@IsNotEmpty()
-	public token: string;
+	@IsString()
+	public accountId: string;
 
 	@IsString()
 	@IsNotEmpty()
-	public password: string;
+	public email: string;
 }

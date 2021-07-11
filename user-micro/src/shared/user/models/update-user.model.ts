@@ -1,4 +1,3 @@
-// ENUMS
 import { Sex } from '../../../common/enums/sex.enum';
 
 export class UpdateUserModel {
@@ -8,5 +7,4 @@ export class UpdateUserModel {
 	public phone?: string;
 	public gender?: Sex;
 	public email?: string;
-	public password?: string;
 }

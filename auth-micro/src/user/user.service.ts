@@ -28,4 +28,10 @@ export class UserService implements IUserService {
 
 		return this.clientProxyUsersMicro.send('register-user', data);
 	}
+
+	public updateEmail(newEmail: string) {
+		this.logger.log(`Update Email - Payload: ${JSON.stringify(newEmail)}`);
+
+		return this.clientProxyUsersMicro.emit('update-email', newEmail);
+	}
 }

@@ -15,6 +15,9 @@ import { AccountModel } from '@src/shared/auth/models/account.model';
 import { LoginModel } from '@src/shared/auth/models/login.model';
 import { CreateAccountResponseModel } from '@src/shared/auth/models/create-account-response.model';
 import { ResetPasswordModel } from '@src/shared/auth/models/reset-password.model';
+import { UpdatePasswordMessageModel } from '@src/shared/auth/models/update-password-message.model';
+import { UpdateEmailModel } from '@src/shared/user/models/update-email.model';
+import { UpdateEmailMessageModel } from '@src/shared/user/models/update-email-message.model';
 
 @Injectable()
 export class AuthService implements IAuthService {
@@ -108,6 +111,38 @@ export class AuthService implements IAuthService {
 			catchError((error) => {
 				this.logger.error(
 					`Reset Password Error: ${JSON.stringify(error)}`,
+				);
+
+				return throwError(error);
+			}),
+		);
+	}
+
+	public updatePassword(
+		data: UpdatePasswordMessageModel,
+	): Observable<{ message: string }> {
+		this.logger.log(`Update Password - Payload: ${JSON.stringify(data)}`);
+
+		return this.clientProxyAuthMicro.send('update-password', data).pipe(
+			catchError((error) => {
+				this.logger.error(
+					`Update Password Error: ${JSON.stringify(error)}`,
+				);
+
+				return throwError(error);
+			}),
+		);
+	}
+
+	public updateEmail(
+		data: UpdateEmailMessageModel,
+	): Observable<{ message: string }> {
+		this.logger.log(`Update Email - Payload: ${JSON.stringify(data)}`);
+
+		return this.clientProxyAuthMicro.send('update-email', data).pipe(
+			catchError((error) => {
+				this.logger.error(
+					`Update Email Error: ${JSON.stringify(error)}`,
 				);
 
 				return throwError(error);

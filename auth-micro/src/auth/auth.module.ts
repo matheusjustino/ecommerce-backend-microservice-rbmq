@@ -32,7 +32,7 @@ import { AuthProviders } from './auth.providers';
 			imports: [AppConfigModule],
 			useFactory: (appConfigService: AppConfigService) => ({
 				secret: appConfigService.secret,
-				signOptions: { expiresIn: '1d' },
+				signOptions: { expiresIn: '1d', algorithm: 'HS384' },
 			}),
 			inject: [AppConfigService],
 		}),
@@ -41,4 +41,4 @@ import { AuthProviders } from './auth.providers';
 	providers: [...AuthProviders],
 	exports: [...AuthProviders],
 })
-export class AuthModule { }
+export class AuthModule {}
