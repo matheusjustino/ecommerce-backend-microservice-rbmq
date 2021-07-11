@@ -1,4 +1,6 @@
 import { NestFactory } from '@nestjs/core';
+import momentTimezone from 'moment-timezone';
+import helmet from 'helmet';
 
 // MODULES
 import { AppModule } from './app.module';
@@ -16,6 +18,8 @@ import { CustomValidationPipe } from './common/pipes/custom-validation-pipe.pipe
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 
+	app.use(helmet());
+
 	app.setGlobalPrefix('api/v1');
 
 	app.useGlobalFilters(new HttpExceptionFilter());
@@ -25,6 +29,12 @@ async function bootstrap() {
 	);
 	app.useGlobalPipes(new CustomValidationPipe());
 
-	await app.listen(3000);
+	Date.prototype.toJSON = function (): any {
+		return momentTimezone(this)
+			.tz('America/Sao_Paulo')
+			.format('YYYY-MM-DD HH:mm:ss.SSSS');
+	};
+
+	await app.listen(8080);
 }
 bootstrap();
