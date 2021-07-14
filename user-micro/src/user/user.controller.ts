@@ -29,7 +29,7 @@ export class UserController {
 	 * send -> MessagePattern -> espera a resposta
 	 */
 
-	@EventPattern('register-user')
+	@MessagePattern('register-user')
 	public register(registerModel: RegisterModel): Observable<UserModel> {
 		return this.userService.createUser(registerModel);
 	}

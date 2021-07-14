@@ -9,7 +9,7 @@ import {
 	Query,
 	UseGuards,
 } from '@nestjs/common';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 // MODELS
 import { UserModel } from '@src/shared/user/models/user.model';

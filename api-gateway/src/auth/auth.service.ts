@@ -16,7 +16,6 @@ import { LoginModel } from '@src/shared/auth/models/login.model';
 import { CreateAccountResponseModel } from '@src/shared/auth/models/create-account-response.model';
 import { ResetPasswordModel } from '@src/shared/auth/models/reset-password.model';
 import { UpdatePasswordMessageModel } from '@src/shared/auth/models/update-password-message.model';
-import { UpdateEmailModel } from '@src/shared/user/models/update-email.model';
 import { UpdateEmailMessageModel } from '@src/shared/user/models/update-email-message.model';
 
 @Injectable()
