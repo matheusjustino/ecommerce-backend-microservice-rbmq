@@ -23,6 +23,7 @@ export class CreateAccountModel {
 	@IsEnum(Sex, {
 		message: `O gênero deve ser Male, Female ou Other.`,
 	})
+	@IsNotEmpty()
 	public gender: Sex;
 
 	@IsNotEmpty()

@@ -8,9 +8,18 @@ import { isAfter, addHours } from 'date-fns';
 
 // INTERFACES
 import { IAuthService } from '@src/shared/auth/interfaces/auth.service';
-import { IHashService, HASH_SERVICE } from '@src/shared/hash/interfaces/hash.service';
-import { IJobsService, JOBS_SERVICE } from '@src/shared/jobs/interfaces/jobs.service';
-import { IUserService, USER_SERVICE } from '@src/shared/user/interfaces/user.service';
+import {
+	IHashService,
+	HASH_SERVICE,
+} from '@src/shared/hash/interfaces/hash.service';
+import {
+	IJobsService,
+	JOBS_SERVICE,
+} from '@src/shared/jobs/interfaces/jobs.service';
+import {
+	IUserService,
+	USER_SERVICE,
+} from '@src/shared/user/interfaces/user.service';
 
 // REPOSITORIES
 import { AccountRepository } from '@src/database/repositories/account.repository';
@@ -22,6 +31,7 @@ import { RegisterModel } from '@src/shared/auth/models/register.model';
 import { LoginModel } from '@src/shared/auth/models/login.model';
 import { UserTokenModel } from '@src/shared/auth/models/user-token.model';
 import { UpdateUserMessageModel } from '@src/shared/auth/models/update-account-message.model';
+import { UpdatePasswordModel } from '@src/shared/auth/models/update-password.model';
 import {
 	UserModel,
 	UserRegisterModel,
@@ -34,7 +44,8 @@ import {
 
 // SCHEMAS
 import { UserTokenDocument } from '@src/database/schemas/user-token.schema';
-
+import { UpdateEmailModel } from '@src/shared/user/models/update-email.model';
+import { UpdateEmailMessageModel } from '@src/shared/user/models/update-email-message.model';
 
 @Injectable()
 export class AuthService implements IAuthService {
@@ -50,7 +61,7 @@ export class AuthService implements IAuthService {
 		private readonly jwtService: JwtService,
 		private readonly accountRepository: AccountRepository,
 		private readonly userTokenRepository: UserTokenRepository,
-	) { }
+	) {}
 
 	public validateToken(token: string): Observable<AccountModel> {
 		this.logger.log(`Validate Token - Payload: ${token}`);
@@ -58,14 +69,14 @@ export class AuthService implements IAuthService {
 		return from(this.jwtService.verifyAsync(token)).pipe(
 			switchMap((payload) => {
 				return from(
-					this.accountRepository.accountModel.findOne({
-						email: payload['email'],
-					}),
+					this.accountRepository.accountModel.findById(
+						payload['accountId'],
+					),
 				);
 			}),
 			map((account: AccountModel) => {
 				if (!account) {
-					throw new RpcException('Invalid token. Acount not found');
+					throw new RpcException('Invalid token. Account not found');
 				}
 
 				return account;
@@ -135,7 +146,9 @@ export class AuthService implements IAuthService {
 		}
 
 		return from(
-			this.accountRepository.accountModel.findOne({ email: login.email }),
+			this.accountRepository.accountModel
+				.findOne({ email: login.email })
+				.select('+password'),
 		).pipe(
 			switchMap((account) => {
 				if (!account) {
@@ -143,21 +156,25 @@ export class AuthService implements IAuthService {
 				}
 
 				return from(
-					this.hashService.compareHash(
-						login.password,
-						account.password,
-					),
+					this.hashService
+						.compareHash(login.password, account.password)
+						.pipe(
+							switchMap((result) => {
+								if (!result) {
+									throw new RpcException('Invalid Password!');
+								}
+
+								const token = this.jwtService.sign({
+									accountId: account._id,
+									email: login.email,
+								});
+
+								return of({ token });
+							}),
+						),
 				);
 			}),
-			switchMap((result) => {
-				if (!result) {
-					throw new RpcException('Invalid Password!');
-				}
 
-				const token = this.jwtService.sign({ email: login.email });
-
-				return of({ token });
-			}),
 			catchError((error) => {
 				this.logger.error(`Login Error: ${error}`);
 
@@ -241,9 +258,9 @@ export class AuthService implements IAuthService {
 				}
 
 				return from(
-					this.accountRepository.accountModel.findById(
-						userToken.userId,
-					),
+					this.accountRepository.accountModel
+						.findById(userToken.userId)
+						.select('+password'),
 				).pipe(
 					switchMap((account) => {
 						if (!account) {
@@ -260,7 +277,6 @@ export class AuthService implements IAuthService {
 
 								userToken.used = true;
 								return from(userToken.save()).pipe(
-									// TODO: Atualizar a senha no user
 									map(() => ({
 										message: 'Sua senha foi alterada',
 									})),
@@ -278,7 +294,9 @@ export class AuthService implements IAuthService {
 		);
 	}
 
-	public updateAccount(data: UpdateUserMessageModel): Observable<AccountModel> {
+	public updateAccount(
+		data: UpdateUserMessageModel,
+	): Observable<AccountModel> {
 		const { accountId, updateModel } = data;
 
 		this.logger.log(
@@ -323,6 +341,87 @@ export class AuthService implements IAuthService {
 				);
 
 				throw new RpcException(error);
+			}),
+		);
+	}
+
+	public updatePassword(
+		accountEmail: string,
+		updateModel: UpdatePasswordModel,
+	): Observable<{ message: string }> {
+		this.logger.log(
+			`Update Password - Payload: ${JSON.stringify(accountEmail)}`,
+		);
+		const { yourPassword, newPassword, confirmNewPassword } = updateModel;
+
+		if (newPassword !== confirmNewPassword) {
+			throw new RpcException('Passwords does not match');
+		}
+
+		return from(
+			this.accountRepository.accountModel
+				.findOne({
+					email: accountEmail,
+				})
+				.select('+password'),
+		).pipe(
+			switchMap((account) => {
+				if (!account) {
+					throw new RpcException('Account not found');
+				}
+
+				return this.hashService
+					.compareHash(yourPassword, account.password)
+					.pipe(
+						switchMap((result) => {
+							if (!result) {
+								throw new RpcException('Invalid password');
+							}
+
+							account.password = newPassword;
+
+							return from(account.save());
+						}),
+					);
+			}),
+			map(() => ({ message: 'Password updated' })),
+		);
+	}
+
+	public updateEmail(
+		data: UpdateEmailMessageModel,
+	): Observable<{ message: string }> {
+		const { accountId, updateModel } = data;
+		return from(
+			this.accountRepository.accountModel.findById(accountId),
+		).pipe(
+			switchMap((account) => {
+				if (!account || account.email !== updateModel.oldEmail) {
+					throw new RpcException('Account not found');
+				}
+
+				account.email = updateModel.newEmail;
+				return from(account.save());
+			}),
+			map(() => {
+				this.userService.updateEmail(updateModel.newEmail);
+				return { message: 'Email updated' };
+			}),
+		);
+	}
+
+	public accountRole(accountId: string): Observable<string> {
+		return from(
+			this.accountRepository.accountModel.findById(accountId),
+		).pipe(
+			map((account) => {
+				if (!account) {
+					if (!account) {
+						throw new RpcException('Account not found');
+					}
+				}
+
+				return account.role;
 			}),
 		);
 	}

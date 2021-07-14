@@ -12,7 +12,7 @@ export class Account implements AccountModel {
 	@Prop({ type: String, unique: true })
 	public email: string;
 
-	@Prop({ type: String })
+	@Prop({ type: String, select: false })
 	public password: string;
 
 	@Prop({

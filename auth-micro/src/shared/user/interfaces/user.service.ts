@@ -1,10 +1,14 @@
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs';
 
 // MODELS
-import { UserModel, UserRegisterModel } from "@src/shared/auth/models/user.model";
+import {
+	UserModel,
+	UserRegisterModel,
+} from '@src/shared/auth/models/user.model';
 
 export const USER_SERVICE = 'USER_SERVICE';
 
 export interface IUserService {
-	createUser(data: UserRegisterModel): Observable<UserModel>
+	createUser(data: UserRegisterModel): Observable<UserModel>;
+	updateEmail(newEmail: string): Observable<any>;
 }

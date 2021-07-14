@@ -13,6 +13,7 @@ import { AppConfigService } from '@src/app-config/app-config.service';
 export class ClientProxyRbmq {
 	private clientProxyAuthMicro: ClientProxy = null;
 	private clitProxyUsersMicro: ClientProxy = null;
+	private clientProxyProductMicro: ClientProxy = null;
 
 	constructor(private readonly appConfigService: AppConfigService) {}
 
@@ -40,6 +41,20 @@ export class ClientProxyRbmq {
 		}
 
 		return this.clitProxyUsersMicro;
+	}
+
+	public get clientMicroProduct(): ClientProxy {
+		if (!this.clientProxyProductMicro) {
+			const clientProxy = this.createClientProxy(
+				[this.appConfigService.amqpUrl],
+				this.appConfigService.productQueue,
+			);
+
+			this.clientProxyProductMicro =
+				ClientProxyFactory.create(clientProxy);
+		}
+
+		return this.clientProxyProductMicro;
 	}
 
 	private createClientProxy(

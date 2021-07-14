@@ -35,9 +35,6 @@ export class User implements UserModel {
 	@Prop({ type: String, required: true, unique: true })
 	public email: string;
 
-	@Prop({ type: String, required: true, select: false })
-	public password: string;
-
 	@Prop({
 		type: UserRole,
 		enum: [UserRole.ADMIN, UserRole.CUSTOMER],

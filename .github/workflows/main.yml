@@ -108,3 +108,28 @@ jobs:
       - name: Setup Project UserMicro
         working-directory: ./user-micro
         run: yarn && yarn format && yarn build
+
+  # PRODUCT MICRO
+  product-micro:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./product-micro
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # Setup user micro
+      - name: Setup Project ProductMicro
+        working-directory: ./product-micro
+        run: yarn && yarn format && yarn build

@@ -11,7 +11,6 @@ export class UserModel {
 	public phone: string;
 	public gender: Sex;
 	public email: string;
-	public password?: string;
 	public role: UserRole;
 	public createdAt?: Date;
 	public updatedAt?: Date;

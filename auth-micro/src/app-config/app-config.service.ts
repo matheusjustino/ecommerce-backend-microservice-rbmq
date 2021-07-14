@@ -13,6 +13,10 @@ export class AppConfigService {
 		return this.configService.get<string>('SECRET');
 	}
 
+	public get publicKey(): string {
+		return this.configService.get<string>('PUBLIC_KEY');
+	}
+
 	public get amqpUrl(): string {
 		return this.configService.get<string>('AMQP_URL');
 	}
