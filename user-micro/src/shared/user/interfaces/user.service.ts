@@ -8,12 +8,10 @@ import { RegisterModel, UserModel } from '../models/user.model';
 export const USER_SERVICE = 'USER_SERVICE';
 
 export interface IUserService {
-	createUser(register: RegisterModel): Observable<UserModel>
+	createUser(register: RegisterModel): Observable<UserModel>;
 	findAll(query: FindUserQueryModel): Observable<UserModel[]>;
-	findById(
-		accountId: string,
-		selectPassword: boolean,
-	): Observable<UserModel>
+	findById(accountId: string, selectPassword: boolean): Observable<UserModel>;
 	update(data: UpdateUserMessageModel): Observable<UserModel>;
 	delete(userId: string): Observable<{ message: string }>;
+	updateEmail(newEmail: string): Observable<UserModel>;
 }

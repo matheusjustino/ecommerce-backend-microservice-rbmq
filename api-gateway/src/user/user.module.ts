@@ -18,14 +18,14 @@ import { USER_SERVICE } from '@src/shared/user/interfaces/user.service';
 	providers: [
 		{
 			useClass: UserService,
-			provide: USER_SERVICE
-		}
+			provide: USER_SERVICE,
+		},
 	],
 	exports: [
 		{
 			useClass: UserService,
-			provide: USER_SERVICE
-		}
-	]
+			provide: USER_SERVICE,
+		},
+	],
 })
-export class UserModule { }
+export class UserModule {}

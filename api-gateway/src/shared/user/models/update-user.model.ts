@@ -1,12 +1,32 @@
+import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
+
 // ENUMS
-import { Sex } from "@src/common/enums/sex.enum";
+import { Sex } from '@src/common/enums/sex.enum';
 
 export class UpdateUserModel {
-	public firstName?: string;
-	public lastName?: string;
-	public legalDocument?: string;
-	public phone?: string;
-	public gender?: Sex;
-	public email?: string;
-	public password?: string;
+	@IsOptional()
+	@IsNotEmpty()
+	public firstName?: string = null;
+
+	@IsOptional()
+	@IsNotEmpty()
+	public lastName?: string = null;
+
+	@IsOptional()
+	@IsNotEmpty()
+	public legalDocument?: string = null;
+
+	@IsOptional()
+	@IsNotEmpty()
+	public phone?: string = null;
+
+	@IsEnum(Sex, {
+		message: `O gênero deve ser Male, Female ou Other.`,
+	})
+	@IsOptional()
+	public gender?: Sex = null;
+
+	constructor(init?: Partial<UpdateUserModel>) {
+		Object.assign(this, init);
+	}
 }

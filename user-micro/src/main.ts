@@ -5,7 +5,6 @@ import { Logger } from '@nestjs/common';
 
 import { AppModule } from './app.module';
 import { AppConfigService } from './app-config/app-config.service';
-import { CustomValidationPipe } from './common/pipes/custom-validation-pipe.pipe';
 import { ExceptionFilter } from './common/filters/rpc-exception.filter';
 
 const logger = new Logger('MAIN-USER-MICRO');
@@ -27,7 +26,6 @@ async function bootstrap() {
 		},
 	);
 
-	app.useGlobalPipes(new CustomValidationPipe());
 	app.useGlobalFilters(new ExceptionFilter());
 
 	await app.listen();

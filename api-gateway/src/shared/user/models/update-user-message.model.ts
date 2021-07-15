@@ -1,8 +1,20 @@
+import { Type } from 'class-transformer';
+import { IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+
 // MODELS
-import { UpdateUserModel } from "./update-user.model";
+import { UpdateUserModel } from './update-user.model';
 
 export class UpdateUserMessageModel {
-	public accountId: string;
+	@IsNotEmpty()
+	@IsString()
+	public accountId: string = null;
 
-	public updateModel: UpdateUserModel;
+	@ValidateNested()
+	@Type(() => UpdateUserModel)
+	@IsNotEmpty()
+	public updateModel: UpdateUserModel = null;
+
+	constructor(init?: Partial<UpdateUserMessageModel>) {
+		Object.assign(this, init);
+	}
 }
