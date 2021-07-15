@@ -21,7 +21,7 @@ export class ProductController {
 		private readonly productService: IProductService,
 	) {}
 
-	@EventPattern('create-product')
+	@MessagePattern('create-product')
 	public createProduct(
 		data: CreateProductMessageModel,
 	): Observable<ProductModel> {

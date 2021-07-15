@@ -20,7 +20,7 @@ export class ProductService {
 	public createProduct(data) {
 		this.logger.log(`Create Product - Payload: ${JSON.stringify(data)}`);
 
-		return this.clientProxyProductMicro.emit('create-product', data).pipe(
+		return this.clientProxyProductMicro.send('create-product', data).pipe(
 			map(() => ({ message: 'Producto Criado' })),
 			catchError((err) => {
 				this.logger.error(

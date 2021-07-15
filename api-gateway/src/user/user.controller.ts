@@ -10,6 +10,7 @@ import {
 	UseGuards,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
+import { ApiTags } from '@nestjs/swagger';
 
 // MODELS
 import { UserModel } from '@src/shared/user/models/user.model';
@@ -36,6 +37,7 @@ import { hasRoles } from '@src/common/decorators/roles.decorator';
 // ENUMS
 import { UserRole } from '@src/common/enums/user-role.enum';
 
+@ApiTags('User')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('users')
 export class UserController {
