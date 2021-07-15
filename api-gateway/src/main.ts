@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import momentTimezone from 'moment-timezone';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
 
 // MODULES
@@ -34,6 +35,16 @@ async function bootstrap() {
 			.tz('America/Sao_Paulo')
 			.format('YYYY-MM-DD HH:mm:ss.SSSS');
 	};
+
+	const config = new DocumentBuilder()
+		.setTitle('Backend Ecommerce Microservice RBMQ')
+		.setDescription('API para gerencimento de Ecommerce.')
+		.setVersion('1.0')
+		.addTag('Ecommerce')
+		.addBearerAuth({ in: 'header', type: 'http' })
+		.build();
+	const document = SwaggerModule.createDocument(app, config);
+	SwaggerModule.setup('api', app, document);
 
 	await app.listen(8080);
 }

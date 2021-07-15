@@ -1,4 +1,5 @@
 import { Body, Controller, Inject, Post, Put, UseGuards } from '@nestjs/common';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 // INTERFACES
 import {
@@ -26,6 +27,7 @@ import { User } from '@src/common/decorators/user.decorator';
 import { UpdatePropertiesValidationPipe } from '@src/common/pipes/update-properties-validation.pipe';
 import { UpdateEmailMessageModel } from '@src/shared/user/models/update-email-message.model';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
 	constructor(
@@ -39,6 +41,7 @@ export class AuthController {
 	 */
 
 	@Post('register')
+	@ApiBody({ type: CreateAccountModel })
 	public createAccount(@Body() data: CreateAccountModel) {
 		return this.authService.createAccount(data);
 	}

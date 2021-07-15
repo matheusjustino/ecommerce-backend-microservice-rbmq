@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { ProxyRbmqModule } from './proxy-rbmq/proxy-rbmq.module';
 import { UserModule } from './user/user.module';
 import { ProductModule } from './product/product.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
 	imports: [
@@ -14,6 +15,7 @@ import { ProductModule } from './product/product.module';
 		ProxyRbmqModule,
 		UserModule,
 		ProductModule,
+		CategoryModule,
 	],
 })
 export class AppModule {}

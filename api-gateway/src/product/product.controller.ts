@@ -10,6 +10,7 @@ import {
 	Query,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
+import { ApiTags } from '@nestjs/swagger';
 
 // INTERFACES
 import {
@@ -26,6 +27,7 @@ import { UpdateProductModel } from '@src/shared/product/models/update-product.mo
 // PIPES
 import { FindProductsQueryPipe } from '@src/common/pipes/find-products-query.pipe';
 
+@ApiTags('Product')
 @Controller('products')
 export class ProductController {
 	constructor(

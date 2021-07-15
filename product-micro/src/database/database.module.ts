@@ -12,6 +12,7 @@ import { ModelsProviderAsync } from './models.provider';
 
 // REPOSITORIES
 import { ProductRepository } from './repositories/product.repository';
+import { CategoryRepository } from './repositories/schema.repository';
 
 @Module({
 	imports: [
@@ -28,7 +29,7 @@ import { ProductRepository } from './repositories/product.repository';
 		}),
 		MongooseModule.forFeatureAsync(ModelsProviderAsync),
 	],
-	providers: [ProductRepository],
-	exports: [ProductRepository],
+	providers: [ProductRepository, CategoryRepository],
+	exports: [ProductRepository, CategoryRepository],
 })
 export class DatabaseModule {}

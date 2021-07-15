@@ -1,10 +1,11 @@
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { Injectable, Logger } from '@nestjs/common';
 import { from, Observable, throwError } from 'rxjs';
 import { RpcException } from '@nestjs/microservices';
 
 // REPOSITORIES
 import { ProductRepository } from '@src/database/repositories/product.repository';
+import { CategoryRepository } from '@src/database/repositories/schema.repository';
 
 // INTERFACES
 import { IProductService } from '@src/shared/product/interfaces/product.service';
@@ -15,18 +16,37 @@ import { UpdateProductModel } from '@src/shared/product/models/update-product.mo
 import { ProductModel } from '@src/shared/product/models/product.model';
 import { FindProductsQueryModel } from '@src/shared/product/models/find-products-query.model';
 
+// SCHEMAS
+import { CategoryDocument } from '@src/database/schemas/category.schema';
+
 @Injectable()
 export class ProductService implements IProductService {
 	private logger = new Logger(ProductService.name);
 
-	constructor(private readonly productRepository: ProductRepository) {}
+	constructor(
+		private readonly productRepository: ProductRepository,
+		private readonly categoryRepository: CategoryRepository,
+	) {}
 
 	public createProduct(
 		data: CreateProductMessageModel,
 	): Observable<ProductModel> {
 		this.logger.log(`Create Product - Payload: ${JSON.stringify(data)}`);
 
-		return from(this.productRepository.productModel.create(data)).pipe(
+		return from(
+			this.categoryRepository.categoryModel.find({
+				_id: {
+					$in: data.category,
+				},
+			}),
+		).pipe(
+			switchMap((categories: CategoryDocument[]) => {
+				if (!categories || categories.length !== data.category.length) {
+					throw new RpcException('Some category does not exists');
+				}
+
+				return from(this.productRepository.productModel.create(data));
+			}),
 			catchError((err) => {
 				this.logger.error(
 					`Create Product Error: ${JSON.stringify(err)}`,
@@ -91,7 +111,9 @@ export class ProductService implements IProductService {
 		this.logger.log(`Get Products By Id - Payload: ${productId}`);
 
 		return from(
-			this.productRepository.productModel.findById(productId),
+			this.productRepository.productModel
+				.findById(productId)
+				.populate('category'),
 		).pipe(
 			map((product) => {
 				if (!product) {
