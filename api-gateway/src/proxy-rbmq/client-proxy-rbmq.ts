@@ -14,6 +14,7 @@ export class ClientProxyRbmq {
 	private clientProxyAuthMicro: ClientProxy = null;
 	private clitProxyUsersMicro: ClientProxy = null;
 	private clientProxyProductMicro: ClientProxy = null;
+	private clientProxyOrderMicro: ClientProxy = null;
 
 	constructor(private readonly appConfigService: AppConfigService) {}
 
@@ -55,6 +56,19 @@ export class ClientProxyRbmq {
 		}
 
 		return this.clientProxyProductMicro;
+	}
+
+	public get clientMicroOrder(): ClientProxy {
+		if (!this.clientProxyOrderMicro) {
+			const clientProxy = this.createClientProxy(
+				[this.appConfigService.amqpUrl],
+				this.appConfigService.orderQueue,
+			);
+
+			this.clientProxyOrderMicro = ClientProxyFactory.create(clientProxy);
+		}
+
+		return this.clientProxyOrderMicro;
 	}
 
 	private createClientProxy(

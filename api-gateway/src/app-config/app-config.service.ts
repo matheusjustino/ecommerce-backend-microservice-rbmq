@@ -20,4 +20,8 @@ export class AppConfigService {
 	public get productQueue(): string {
 		return this.configService.get<string>('PRODUCT_QUEUE');
 	}
+
+	public get orderQueue(): string {
+		return this.configService.get<string>('ORDER_QUEUE');
+	}
 }

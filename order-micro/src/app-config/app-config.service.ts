@@ -16,4 +16,8 @@ export class AppConfigService {
 	public get queue(): string {
 		return this.configService.get<string>('QUEUE');
 	}
+
+	public get usersQueue(): string {
+		return this.configService.get<string>('USERS_QUEUE');
+	}
 }
