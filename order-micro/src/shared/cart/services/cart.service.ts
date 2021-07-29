@@ -5,13 +5,20 @@ export const CART_SERVICE = 'CART SERVICE';
 
 // SCHEMAS
 import { CartDocument } from '@src/database/schemas/cart.schema';
-import { CartModel } from '../models/cart.model';
+import {
+	AddItemToCartMessage,
+	CartModel,
+	RemoveItemCartMessage,
+	UpdateCartMessageModel,
+} from '../models/cart.model';
 
 export interface ICartService {
 	getCarts(): Observable<CartModel[]>;
-	// getUserCarts(userId: Types.ObjectId): Observable<CartModel>;
+	getUserCarts(accountId: string): Observable<CartModel[]>;
+	getCartById(cartId: string): Observable<CartModel>;
 	createCart(accountId: string): Observable<CartModel>;
-	// deleteCart(userId: Types.ObjectId): Observable<CartDocument>;
-	// addItemToCart(userId: Types.ObjectId, data): Observable<CartDocument>;
-	// removeItemToCart(userId: Types.ObjectId, data): Observable<CartDocument>;
+	updateCart(data: UpdateCartMessageModel): Observable<CartModel>;
+	deleteCart(cartId: string): Observable<CartModel>;
+	addItemToCart(data: AddItemToCartMessage): Observable<CartModel>;
+	removeItemCart(data: RemoveItemCartMessage): Observable<CartModel>;
 }

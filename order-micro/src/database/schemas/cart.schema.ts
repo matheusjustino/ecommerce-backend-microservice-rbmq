@@ -6,11 +6,15 @@ import { CartItemDocument, CartItemSchema } from './cart-item.schema';
 
 // MODELS
 // import { UserModel } from '@src/shared/user/models/user.model';
-import { CartModel, ShippingMethod } from '@src/shared/cart/models/cart.model';
+import {
+	CartItemModel,
+	CartModel,
+	ShippingMethod,
+} from '@src/shared/cart/models/cart.model';
 import {
 	BillingAddressModel,
 	ShippingAddressModel,
-} from '@src/shared/checkout/models/checkoutModel';
+} from '@src/shared/checkout/models/checkout.model';
 
 @Schema({ timestamps: true })
 export class Cart implements CartModel {
@@ -18,7 +22,7 @@ export class Cart implements CartModel {
 	public user: Types.ObjectId;
 
 	@Prop({ type: [CartItemSchema], default: [] })
-	public items: CartItemDocument[];
+	public items: CartItemModel[];
 
 	@Prop({ type: Number, default: 0 })
 	public total: number;

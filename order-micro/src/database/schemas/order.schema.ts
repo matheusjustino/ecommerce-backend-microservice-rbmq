@@ -10,7 +10,7 @@ import { ShippingMethod } from '@src/shared/cart/models/cart.model';
 import {
 	BillingAddressModel,
 	ShippingAddressModel,
-} from '@src/shared/checkout/models/checkoutModel';
+} from '@src/shared/checkout/models/checkout.model';
 import { PaymentModel } from '@src/shared/payment/model/payment.model';
 
 @Schema({ timestamps: true })

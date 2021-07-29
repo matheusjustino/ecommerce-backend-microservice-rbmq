@@ -64,9 +64,3 @@ export class ShippingAddressModel {
 	@IsOptional()
 	public orderNotes?: string;
 }
-
-export class SetBillingShippingAddressesModel2 {
-	public billing: BillingAddressModel;
-
-	public shipping: ShippingAddressModel;
-}

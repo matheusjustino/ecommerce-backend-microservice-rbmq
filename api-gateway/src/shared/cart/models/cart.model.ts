@@ -37,16 +37,6 @@ export class ShippingMethod extends CalculateShippingAndDeadlineResponseModel {
 	public CepDestino: string;
 }
 
-export class CartAddModel {
-	@IsString()
-	@IsNotEmpty()
-	public productId: string;
-
-	@IsString()
-	@IsNumber()
-	public quantity: number;
-}
-
 export class CartItemModel {
 	@IsString()
 	@IsOptional()
@@ -73,11 +63,11 @@ export class CartItemModel {
 	public attributes: [];
 
 	@IsDate()
-	@IsNotEmpty()
+	@IsOptional()
 	public createdAt?: Date;
 
 	@IsDate()
-	@IsNotEmpty()
+	@IsOptional()
 	public updatedAt?: Date;
 }
 
@@ -127,6 +117,16 @@ export class CartModel {
 	public updatedAt?: Date;
 }
 
+export class CartAddModel {
+	@IsString()
+	@IsNotEmpty()
+	public productId: string;
+
+	@IsString()
+	@IsNumber()
+	public quantity: number;
+}
+
 export class CartUpdateModel {
 	@IsString()
 	@IsNotEmpty()
@@ -171,4 +171,43 @@ export class SetBillingShippingAddressesModel {
 	@ValidateNested({ always: true })
 	@IsNotEmpty()
 	public shipping: ShippingAddressModel;
+}
+
+export class UpdateCartMessageModel {
+	@IsString()
+	@IsNotEmpty()
+	public cartId: string;
+
+	@Type(() => ShippingAddressModel)
+	@ValidateNested({ always: true })
+	@IsNotEmpty()
+	public updateCart: SetBillingShippingAddressesModel;
+}
+
+export class AddItemToCartMessage {
+	@IsString()
+	@IsNotEmpty()
+	public cartId: string;
+
+	@Type(() => CartItemModel)
+	@ValidateNested({ always: true })
+	@IsNotEmpty()
+	public item: CartItemModel;
+}
+
+export class RemoveItemCartMessage {
+	@IsString()
+	@IsNotEmpty()
+	public cartId: string;
+
+	@Type(() => CartItemModel)
+	@ValidateNested({ always: true })
+	@IsNotEmpty()
+	public item: CartItemModel;
+}
+
+export class CreateCartModel {
+	@IsString()
+	@IsNotEmpty()
+	public userId: string;
 }
