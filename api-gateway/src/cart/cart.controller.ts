@@ -92,6 +92,6 @@ export class CartController {
 			item: body,
 		};
 
-		return this.cartService.addItemToCart(data);
+		return this.cartService.removeItemCart(data);
 	}
 }
