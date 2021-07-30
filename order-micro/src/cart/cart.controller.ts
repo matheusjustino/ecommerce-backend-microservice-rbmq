@@ -1,7 +1,6 @@
 import { MessagePattern } from '@nestjs/microservices';
 import { Controller, Inject } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { Types } from 'mongoose';
 
 // INTERFACES
 import {

@@ -1,16 +1,14 @@
 import { Observable } from 'rxjs';
-import { Types } from 'mongoose';
 
-export const CART_SERVICE = 'CART SERVICE';
-
-// SCHEMAS
-import { CartDocument } from '@src/database/schemas/cart.schema';
+// MODELS
 import {
 	AddItemToCartMessage,
 	CartModel,
 	RemoveItemCartMessage,
 	UpdateCartMessageModel,
 } from '../models/cart.model';
+
+export const CART_SERVICE = 'CART SERVICE';
 
 export interface ICartService {
 	getCarts(): Observable<CartModel[]>;

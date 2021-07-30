@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import {
 	CalculateShippingModel,
 	VerifyCepResponseSuccessModel,
@@ -11,11 +12,11 @@ export const CORREIOS_SERVICE = 'CORREIOS SERVICE';
 export interface ICorreiosService {
 	verifyZip(
 		zip: string,
-	): Promise<VerifyCepResponseSuccessModel | VerifyCepResponseErrorModel>;
+	): Observable<VerifyCepResponseSuccessModel | VerifyCepResponseErrorModel>;
 	calculateShipping(
 		data: CalculateShippingModel,
-	): Promise<CalculateShippingResponseModel[]>;
+	): Observable<CalculateShippingResponseModel[]>;
 	calculateShippingAndDeadline(
 		data: CalculateShippingModel,
-	): Promise<CalculateShippingAndDeadlineResponseModel[]>;
+	): Observable<CalculateShippingAndDeadlineResponseModel[]>;
 }

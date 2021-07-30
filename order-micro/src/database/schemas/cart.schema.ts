@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
 // SCHEMAS
-import { CartItemDocument, CartItemSchema } from './cart-item.schema';
+import { CartItemSchema } from './cart-item.schema';
 
 // MODELS
 // import { UserModel } from '@src/shared/user/models/user.model';
@@ -34,10 +34,10 @@ export class Cart implements CartModel {
 	public shippingMethod: ShippingMethod;
 
 	@Prop({ type: BillingAddressModel, default: new BillingAddressModel() })
-	public billingAddress: BillingAddressModel;
+	public billing: BillingAddressModel;
 
 	@Prop({ type: ShippingAddressModel, default: new ShippingAddressModel() })
-	public shippingAddress: ShippingAddressModel;
+	public shipping: ShippingAddressModel;
 }
 
 export type CartDocument = Cart & Document;

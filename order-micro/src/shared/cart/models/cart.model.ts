@@ -2,7 +2,7 @@ import { Types } from 'mongoose';
 
 import {
 	ShippingMethodCode,
-	ShippingMethodCodeValidator,
+	// ShippingMethodCodeValidator,
 } from '@src/common/enums/shipping-method-code.enum';
 import {
 	BillingAddressModel,
@@ -35,8 +35,8 @@ export class CartModel {
 	public total: number;
 	public quantity: number;
 	public shippingMethod: ShippingMethod;
-	public billingAddress: BillingAddressModel;
-	public shippingAddress: ShippingAddressModel;
+	public billing: BillingAddressModel;
+	public shipping: ShippingAddressModel;
 	public createdAt?: Date;
 	public updatedAt?: Date;
 }
