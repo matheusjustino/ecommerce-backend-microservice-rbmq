@@ -28,6 +28,8 @@ export class MailService implements IMailService {
 		subject,
 		templateData,
 	}: SendEmail): Observable<any> {
+		this.logger.log('Send Email');
+
 		const transporter = nodemailer.createTransport({
 			host: this.appConfigService.mailHost,
 			port: this.appConfigService.mailPort,

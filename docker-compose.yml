@@ -1,0 +1,74 @@
+version: "3"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  mongodb:
+    image: mongo
+    container_name: db
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      NODE_ENV: docker
+
+  api-gateway:
+    build: "./api-gateway"
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      NODE_ENV: docker
+    depends_on:
+      - rabbitmq
+
+  auth-micro:
+    build: "./auth-micro"
+    container_name: auth-micro
+    environment:
+      NODE_ENV: docker
+    depends_on:
+      - rabbitmq
+      - mongodb
+
+  jobs-micro:
+    build:
+      context: "./jobs-micro"
+      dockerfile: Dockerfile
+    container_name: jobs-micro
+    environment:
+      NODE_ENV: docker
+    depends_on:
+      - rabbitmq
+
+  order-micro:
+    build: "./order-micro"
+    container_name: order-micro
+    environment:
+      NODE_ENV: docker
+    depends_on:
+      - rabbitmq
+      - mongodb
+
+  product-micro:
+    build: "./product-micro"
+    container_name: product-micro
+    environment:
+      NODE_ENV: docker
+    depends_on:
+      - rabbitmq
+      - mongodb
+
+  user-micro:
+    build: "./user-micro"
+    container_name: user-micro
+    environment:
+      NODE_ENV: docker
+    depends_on:
+      - rabbitmq
+      - mongodb

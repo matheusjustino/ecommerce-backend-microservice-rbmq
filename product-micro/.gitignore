@@ -3,6 +3,7 @@
 /node_modules
 
 # Envs
+src/environments/docker.env
 src/environments/develop.env
 src/environments/production.env
 
