@@ -7,12 +7,13 @@ import { ProxyRbmqModule } from '@src/proxy-rbmq/proxy-rbmq.module';
 
 // MODULES
 import { DatabaseModule } from '@src/database/database.module';
+import { StockModule } from '../stock/stock.module';
 
 // INTERFACES
 import { PRODUCT_SERVICE } from '@src/shared/product/interfaces/product.service';
 
 @Module({
-	imports: [DatabaseModule, ProxyRbmqModule],
+	imports: [DatabaseModule, ProxyRbmqModule, StockModule],
 	controllers: [ProductController],
 	providers: [
 		{

@@ -1,5 +1,5 @@
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { from, Observable, throwError } from 'rxjs';
 import { RpcException } from '@nestjs/microservices';
 
@@ -9,12 +9,17 @@ import { CategoryRepository } from '@src/database/repositories/schema.repository
 
 // INTERFACES
 import { IProductService } from '@src/shared/product/interfaces/product.service';
+import {
+	STOCK_SERVICE,
+	IStockService,
+} from '@src/shared/stock/interfaces/stock.service';
 
 // MODELS
 import { CreateProductMessageModel } from '@src/shared/product/models/create-product-message.model';
+import { FindProductsQueryModel } from '@src/shared/product/models/find-products-query.model';
 import { UpdateProductModel } from '@src/shared/product/models/update-product.model';
 import { ProductModel } from '@src/shared/product/models/product.model';
-import { FindProductsQueryModel } from '@src/shared/product/models/find-products-query.model';
+import { CreateProductStockMessageModel } from '@src/shared/stock/models/stock.model';
 
 // SCHEMAS
 import { CategoryDocument } from '@src/database/schemas/category.schema';
@@ -24,6 +29,8 @@ export class ProductService implements IProductService {
 	private logger = new Logger(ProductService.name);
 
 	constructor(
+		@Inject(STOCK_SERVICE)
+		private readonly stockService: IStockService,
 		private readonly productRepository: ProductRepository,
 		private readonly categoryRepository: CategoryRepository,
 	) {}
@@ -33,19 +40,29 @@ export class ProductService implements IProductService {
 	): Observable<ProductModel> {
 		this.logger.log(`Create Product - Payload: ${JSON.stringify(data)}`);
 
-		return from(
-			this.categoryRepository.categoryModel.find({
-				_id: {
-					$in: data.category,
-				},
+		const product = new this.productRepository.productModel(data);
+		const productStock: CreateProductStockMessageModel = {
+			product: product._id,
+			quantity: 0,
+			inStock: false,
+		};
+
+		return from(this.stockService.createProductStock(productStock)).pipe(
+			switchMap(() => {
+				return from(
+					this.categoryRepository.categoryModel.find({
+						_id: {
+							$in: data.category,
+						},
+					}),
+				);
 			}),
-		).pipe(
 			switchMap((categories: CategoryDocument[]) => {
 				if (!categories || categories.length !== data.category.length) {
 					throw new RpcException('Some category does not exists');
 				}
 
-				return from(this.productRepository.productModel.create(data));
+				return from(product.save());
 			}),
 			catchError((err) => {
 				this.logger.error(

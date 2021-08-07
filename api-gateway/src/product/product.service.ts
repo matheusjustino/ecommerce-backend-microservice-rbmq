@@ -1,12 +1,12 @@
 import { catchError, map } from 'rxjs/operators';
 import { Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { throwError } from 'rxjs';
 
 // RBMQ
 import { ClientProxyRbmq } from '@src/proxy-rbmq/client-proxy-rbmq';
 import { UpdateProductMessageModel } from '@src/shared/product/models/update-product-message.model';
 import { UpdateProductModel } from '@src/shared/product/models/update-product.model';
-import { throwError } from 'rxjs';
 
 @Injectable()
 export class ProductService {
